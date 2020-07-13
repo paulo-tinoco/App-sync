@@ -19,8 +19,12 @@ class ManageOrders(Integration):
             })
 
             self.upinsert_data(Orders, order, {'id': order['id']})
-            for product in products:
-                self.upinsert_data(Products, product['ProductsSold'], {'id': product['ProductsSold']['id']})
+            for row_product in products:
+                product = row_product['ProductsSold']
+                product.update({
+                    'order_id': order['id']
+                })
+                self.upinsert_data(Products, product, {'id': product['id']})
 
     def upinsert_data(self, model, params, search={}):
         try:
